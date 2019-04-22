@@ -1,76 +1,34 @@
 
-import React, {Component} from 'react';
-import {StyleSheet, Text, View, ActivityIndicator, ScrollView, Image} from 'react-native';
-import {Card, Button} from 'react-native-elements'
+import React from 'react';
+import {StyleSheet, View, Text} from 'react-native';
+import { createBottomTabNavigator, createAppContainer, createStackNavigator} from 'react-navigation';
 
-import Deck from './components/Deck/Deck';
+import AuthScreen from './screens/AuthScreen';
+import WelcomeScreen from './screens/WelcomeScreen';
+import MapScreen from './screens/MapScreen';
+import DeckScreen from './screens/DeckScreen';
+import ReviewScreen from './screens/ReviewScreen';
+import SettingsScreen from './screens/SettingsScreen';
 
-const employeeAPI = "https://jobsdb2019.herokuapp.com/employee"
-const employerAPI = 'https://jobsdb2019.herokuapp.com/employer'
 
-export default class App extends Component {
-  state = {
-    isLoading: true,
-    dataSource: null
-  }
-  
-  componentDidMount = () => {
-    return fetch(employeeAPI)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        this.setState({
-          isLoading: false,
-          dataSource: responseJson
-        })
+const MainNavigator = createBottomTabNavigator({
+    welcome: WelcomeScreen,
+    auth: AuthScreen,
+    main: {
+      screen: createBottomTabNavigator({
+        map: MapScreen,
+        deck: DeckScreen,
+        review: {
+          screen: createStackNavigator({
+            review: ReviewScreen,
+            settings: SettingsScreen
+          })
+        }
       })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
-  
-  renderCard = (item) => {
-    return (
-        <Card
-            key={item.id}
-            title={item.name}
-            image={{uri: item.image}}
-            >
-          <Text style={{marginBottom: 10}}>
-            Skills: {item.skills}. Zip Code: {item.zipCode}. Phone Number: {item.number}
-          </Text>
-          <Button 
-            icon={{name: 'phone'}}
-            title="Contact"/>  
-        </Card>
-    )
-  }  
-  
-  render() {
-    
-    if(this.state.isLoading) {
-      return (
-        <View style={styles.container}>
-         <ActivityIndicator />
-        </View>  
-      )
-    } else {
-        return (
-        <ScrollView style={styles.container}>
-            <Deck 
-              data={this.state.dataSource}
-              renderCard={this.renderCard}
-            />
-        </ScrollView>
-      )
     }
   }
-}
+);
 
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 20,
-    flex: 1,
-    backgroundColor: 'white',
-  },
+const App = createAppContainer(MainNavigator)
 
-});
+export default App;
