@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import {View, Text, StyleSheet,Platform} from 'react-native';
 import {Button} from 'react-native-elements';
 
-
 class ReviewScreen extends Component {
   static navigationOptions = ({navigation}) => ({
     headerTitle: 'Review Jobs',
@@ -16,10 +15,6 @@ class ReviewScreen extends Component {
         
   })
 
-    
-      
-    
-  
   render() {
     return (
       <View>
