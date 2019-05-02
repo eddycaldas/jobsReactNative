@@ -1,53 +1,56 @@
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
+import {View, TextInput, Text, StyleSheet, Button} from 'react-native';
 
 class AuthScreen extends Component {
+  state = {
+    email: '',
+    password: ''
+  }
+  
+  checkLogin() {
+    const {email, password} = this.state
+    console.warn(email, password)
+    if(email=='admin' && password=='admin') {
+        this.props.navigation.navigate('map')
+    } else {
+        alert('Email/Password incorrect') 
+    }
+  }
+  
   render() {
     return (
-      <View>
-        <Text>AuthScreen</Text>
-        <Text>AuthScreen</Text>
-        <Text>AuthScreen</Text>
-        <Text>AuthScreen</Text>
-        <Text>AuthScreen</Text>
+      <View style={styles.container}>
+        <Text>Login into your app</Text>
+        <TextInput 
+            style={styles.textInput}
+            placeholder='email'
+            onChangeText={text => this.setState({email: text})}/>
+        <TextInput 
+            style={styles.textInput} 
+            secureTextEntry={true}
+            placeholder='password'
+            onChangeText={text => this.setState({password: text})}/>
+        <Button 
+            title='Login'
+            onPress={() => this.checkLogin()}/>
       </View>
     )
   }
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  textInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    width: '100%'
+  }
+})
+
 export default AuthScreen;
 
-
-// import Icon from 'react-native-vector-icons/FontAwesome';
-// import { Input } from 'react-native-elements';
-// 
-// <Input
-//   placeholder='BASIC INPUT'
-// />
-// 
-// <Input
-//   placeholder='INPUT WITH ICON'
-//   leftIcon={{ type: 'font-awesome', name: 'chevron-left' }}
-// />
-// 
-// <Input
-//   placeholder='INPUT WITH CUSTOM ICON'
-//   leftIcon={
-//     <Icon
-//       name='user'
-//       size={24}
-//       color='black'
-//     />
-//   }
-// />
-// 
-// <Input
-//   placeholder='INPUT WITH SHAKING EFFECT'
-//   shake={true}
-// />
-// 
-// <Input
-//   placeholder='INPUT WITH ERROR MESSAGE'
-//   errorStyle={{ color: 'red' }}
-//   errorMessage='ENTER A VALID ERROR HERE'
-// />
